@@ -1,0 +1,97 @@
+<body><section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-12 col-md-6" [ngClass]="{'registroMargen': !this.vieneDeRegistro}">
+                <div class="card mb-4" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+      
+                      <h2 class="text-uppercase text-center mb-5">Registrar Especialista</h2>
+                      
+                      <form [formGroup]="registerForm">
+                        
+                        <div class="form-outline mb-4">
+                          <input type="text" formControlName="nombre" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example1cg">Nombre</label>
+                        </div>
+                        
+                        <div class="form-outline mb-4">
+                          <input type="email" formControlName="apellido" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example3cg">Apellido</label>
+                        </div>
+                        
+                        <div class="form-outline mb-4">
+                          <input type="text" formControlName="edad" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example4cg">Edad</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                          <input type="text" formControlName="dni" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example4cdg">DNI</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                          <input type="text" formControlName="mail" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example4cdg">Mail</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                          <input type="password" formControlName="password" class="form-control form-control-lg" />
+                          <label class="form-label" for="form3Example4cdg">Password</label>
+                        </div>
+                        
+                        <div class="file input-group mb-4">
+                            <input type="file" class="form-control btn-outline-secondary" formControlName="foto" accept="image/*"(change)="handleFileInput($event)">
+                        </div>
+                        <label class="form-label" for="form3Example4cdg">Foto de Perfil</label>
+
+                        <div class="d-flex justify-content-center">
+                          <button type="button"
+                          class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" (click)="OnRegisterClick()">Register</button>
+                        </div>
+                        
+                        <p class="text-center text-muted mt-5 mb-0">Already have an account? <a href="login"
+                          class="fw-bold text-body"><u>Login here</u></a></p>
+                        </form>
+                      </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="card mb-4" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+      
+                      <h2 class="text-uppercase text-center mb-5">ELEGIR ESPECIALIDADES</h2>
+                      
+                      <form [formGroup]="especialidadesForm">
+                        <div class="card-esp">
+                            <div class="row scrollable-row">
+                                <div *ngFor="let specialty of especialidades" 
+                                    (click)="toggleSpecialty(specialty)"
+                                    [class.selected]="isSelected(specialty)"
+                                    class="specialty">
+                                    {{ specialty }}
+                                </div>
+                                <div *ngFor="let specialty of especialidadesOtras" 
+                                    (click)="toggleSpecialty(specialty)"
+                                    [class.selected]="isSelected(specialty)"
+                                    class="specialty">
+                                    {{ specialty }}
+                                </div>
+                            </div>
+                            
+                          </div>
+                          <div class="form-outline mb-4 d-flex">
+                              <input type="text" formControlName="especialidadOtra" class="form-control form-control-lg" />
+                              <button type="button" class="btn btn-primary ms-2" (click)="agregarEsp()">Agregar</button>
+                            </div>
+                            <label class="form-label" for="form3Example4cdg">Otra(s)</label>
+                        </form>
+                      </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>

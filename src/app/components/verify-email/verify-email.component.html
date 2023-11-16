@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="verify-email.component.css">
+  <title>Registro Exitoso</title>
+</head>
+<body>
+  <div class="container">
+    <div class="message">
+      <h1>¡Bienvenido!</h1>
+      <p>Hemos enviado un correo a {{this.auth.usuarioLogueado}}</p>
+      <p>Por favor, verifica tu dirección de correo electrónico. {{this.auth.usuarioLogueado}}</p>
+      <div class="button-container">
+        <button routerLink="../register" class="back-button">
+          <span class="arrow-icon">&#8592;</span> Ir al Registro
+        </button>
+        <button routerLink="../login"  class="verify-button" >Correo Verificado</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

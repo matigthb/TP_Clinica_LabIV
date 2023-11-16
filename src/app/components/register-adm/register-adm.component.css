@@ -1,0 +1,42 @@
+.container{
+    margin-top: 80px;
+}
+
+.card-esp{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #212529;
+
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 30px;
+  }
+
+  .specialty {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  .selected {
+    background-color: #224870;
+    color: #fff;
+  }
+
+  .card{
+    background-color: #60AFFF;
+  }
+
+  .file
+  {
+    margin-bottom: 50px;
+  }
+
+  .registroMargen{
+    margin-top: 50px;
+  }

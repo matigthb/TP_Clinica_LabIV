@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-red fixed-top" style="background-color: #224870; color: #2AF5FF;">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="home">CLÍNICA NORTE</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="menu">MENU</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="usuarios">USUARIOS</a>
+        </li>
+
+        <div class="d-flex justify-content-center align-items-center">
+          <a routerLink="/login" class="btn btn-login me-2 btn-rounded btn-sm">Login</a>
+          <a routerLink="/register" class="btn btn-register btn-rounded btn-sm">Register</a>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>

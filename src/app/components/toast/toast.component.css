@@ -1,0 +1,21 @@
+/* toast.component.css */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #60AFFF; /* or your desired color */
+    z-index: 9999;
+    border: 1px solid red; /* Add this line temporarily */
+  }
+
+  .success {
+    background-color: #60AFFF; /* Azul claro para avisos */
+  }
+
+  .error {
+    background-color: #FF0000; /* Rojo para errores */
+  }

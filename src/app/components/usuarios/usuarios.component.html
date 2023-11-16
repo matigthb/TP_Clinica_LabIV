@@ -1,0 +1,92 @@
+<div class="row d-flex ">
+    <div class="usuariosCards col-12 col-md-6">
+        <div class="card primercard">
+            <h3 (click)="mostrarAdmins = !mostrarAdmins">ADMINISTRADORES   <i class="fa fa-chevron-down"></i></h3>
+            <div *ngIf="mostrarAdmins"> 
+                <div class="usuarios" *ngFor="let admin of admins">
+                    <div class="header" (click)="toggleDetalle(admin)">
+                    <h2>{{ admin.Nombre }} {{ admin.Apellido }} <i class="fa fa-chevron-down"></i></h2>
+                    </div>
+                    <div class = "detalle" *ngIf="admin.mostrarDetalle">
+                    <!-- Información adicional del usuario -->
+                    Edad: {{ admin.Edad }}<br>
+                    DNI: {{ admin.Dni }}<br>
+                    Mail: {{ admin.Email }}<br>
+                    <!-- Otros detalles que quieras mostrar -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 (click)="mostrarEspecialistas = !mostrarEspecialistas">ESPECIALISTAS   <i class="fa fa-chevron-down"></i></h3>
+            <div *ngIf="mostrarEspecialistas"> 
+                <div class="usuarios" *ngFor="let especialista of especialistas">
+                    <div class="header" (click)="toggleDetalle(especialista)">
+                    <h2>{{ especialista.Nombre }} {{ especialista.Apellido }} <i class="fa fa-chevron-down"></i></h2>
+                    </div>
+                    <div class = "detalle" *ngIf="especialista.mostrarDetalle">
+                    <!-- Información adicional del usuario -->
+                    Edad: {{ especialista.Edad }}<br>
+                    DNI: {{ especialista.Dni }}<br>
+                    Mail: {{ especialista.Email }}<br>
+                    <!-- Otros detalles que quieras mostrar -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3  (click)="mostrarEspecialistasRev = !mostrarEspecialistasRev">ESPECIALISTAS EN REVISION   <i class="fa fa-chevron-down"></i></h3>
+            <div *ngIf="mostrarEspecialistasRev"> 
+                <div class="usuarios" *ngFor="let especialista of especialistasRev">
+                    <div class="header">
+                    <h3 (click)="toggleDetalle(especialista)" >{{ especialista.Nombre }} {{ especialista.Apellido }} <i class="fa fa-chevron-down"></i></h3>
+                </div>
+                <div class = "detalle" *ngIf="especialista.mostrarDetalle">
+                    <!-- Información adicional del usuario -->
+                    Edad: {{ especialista.Edad }}<br>
+                    DNI: {{ especialista.Dni }}<br>
+                    Mail: {{ especialista.Email }}<br>
+                    <!-- Otros detalles que quieras mostrar -->
+                </div>
+                <div class="acciones">
+                    <button class="botones habilitar" (click)="habilitarEspecialista(especialista)">Habilitar</button>
+                    <button class="botones rechazar" (click)="rechazarEspecialista(especialista)">Rechazar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3  (click)="mostrarPacientes = !mostrarPacientes">PACIENTES   <i class="fa fa-chevron-down"></i></h3>
+            <div *ngIf="mostrarPacientes"> 
+                <div class="usuarios" *ngFor="let paciente of pacientes">
+                    <div class="header" (click)="toggleDetalle(paciente)">
+                    <h2>{{ paciente.Nombre }} {{ paciente.Apellido }} <i class="fa fa-chevron-down"></i></h2>
+                    </div>
+                    <div class = "detalle" *ngIf="paciente.mostrarDetalle">
+                    <!-- Información adicional del usuario -->
+                    Edad: {{ paciente.Edad }}<br>
+                    DNI: {{ paciente.Dni }}<br>
+                    Mail: {{ paciente.Email }}<br>
+                    <!-- Otros detalles que quieras mostrar -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container col-12 col-md-6">
+        <div class="btnsregistro">
+            <button routerLink="register-pac" class="reg">Registrar Paciente</button> 
+            <button routerLink="register-esp" class = "reg">Registrar Especialista</button> 
+            <button routerLink="register-adm" class="reg">Registrar Administrador</button> 
+        </div>
+        <div class="registros">
+            <router-outlet></router-outlet> 
+        </div>
+    </div>
+</div>

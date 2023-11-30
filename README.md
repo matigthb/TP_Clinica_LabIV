@@ -1,4 +1,4 @@
-![image](https://github.com/matigthb/TP_Clinica_LabIV/assets/98900532/9fe8dcea-36fb-450e-a5d4-e6a78baf1578)# Bienvenido a mi Proyecto de Clínica para LaboratorioIV - UTN 🩺🥼
+# Bienvenido a mi Proyecto de Clínica para LaboratorioIV - UTN 🩺🥼
 
 Así se ve la página que da la BIENVENIDA al usuario, que necesita loguearse para ingresar a las demás funcionalidades. 
 ![image](https://github.com/matigthb/TP_Clinica_LabIV/assets/98900532/c1c75b77-4c69-4e81-be87-fa2086caeaac)

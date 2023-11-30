@@ -1,0 +1,98 @@
+.profile-container {
+    max-width: 90vw;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-top : 20px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-content {
+    display: flex;
+  }
+  
+  .profile-image {
+    margin-right: 20px;
+  }
+  
+  .profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  .profile-details {
+    flex-grow: 1;
+    font-size: 24px;
+  }
+  
+  .profile-details p {
+    margin-bottom: 10px;
+  }
+
+  .solicitar{
+    width: 100px;
+    height:60px;
+    margin-left: 48%;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    background-color: rgb(65, 140, 211);
+    &:hover {
+        color: #000000;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+.card{
+    background-color: rgb(65, 140, 211);
+    margin-top:40px;
+    margin-bottom: -20px;
+    
+}
+
+.subCard{
+    &:hover {
+        color: #000000;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+.profile-container
+{
+    background-color: rgb(65, 140, 211);
+}
+
+.selected {
+    background-color: #224870;
+    color: #cecece;
+}
+
+.noSelected {
+    background-color: #cecece;
+    color: #000000;
+}
+
+.card-header{
+    font-size: 21px;
+}
+
+.fecha{
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+    border-radius: 10px;
+    margin-bottom: 10px;
+}

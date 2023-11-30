@@ -1,0 +1,9 @@
+/* turnos-por-dia.component.css */
+:host {
+    display: block;
+    margin-top: 20px;
+  }
+  
+  .chart {
+    height: 400px;
+  }

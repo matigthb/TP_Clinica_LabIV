@@ -1,0 +1,73 @@
+<div class="profile-container">
+    <div class="profile-header">
+      <h2>Mi Perfil</h2>
+    </div>
+  
+    <div *ngIf="this.auth.usuarioLogueado != null" class="profile-content">
+        <div *ngIf="this.auth.esPaciente; else foto" class="profile-image">
+            <img [src]="this.auth.usuarioLogueado.Foto1" alt="Foto 1">
+            <img [src]="this.auth.usuarioLogueado.Foto2" alt="Foto 2">
+        </div>
+        <ng-template #foto>
+            <div class="profile-image">
+                <img [src]="this.auth.usuarioLogueado.Foto" alt="Foto">
+            </div>
+        </ng-template>
+    
+        <div class="profile-details">
+            <p appResaltar><strong>{{ 'Nombre:' | mayusculas}}</strong> {{ this.auth.usuarioLogueado.Nombre | capitalizarPrimeraLetra}}</p>
+            <p appResaltar><strong>{{ 'Apellido:' | mayusculas}}</strong> {{ this.auth.usuarioLogueado.Apellido | capitalizarPrimeraLetra}}</p>
+            <p appResaltar><strong>{{ 'Edad:' | mayusculas}}</strong> {{ this.auth.usuarioLogueado.Edad }}</p>
+            <p appResaltar><strong>{{ 'Dni:' | mayusculas}}</strong> {{ this.auth.usuarioLogueado.Dni }}</p>
+            <p *ngIf="this.auth.esPaciente" appResaltar><strong>ObraSocial:</strong> {{ this.auth.usuarioLogueado.ObraSocial }}</p>
+            <p appResaltar><strong>{{ 'Email:' | mayusculas}}</strong> {{ this.auth.usuarioLogueado.Email }}</p>
+            <div *ngIf="this.auth.esEspecialista" class="profile-horarios">
+                <button class="btn btn-primary" (click)="mostrarHorarios = !mostrarHorarios">Horarios</button>
+            </div>
+            <div *ngIf="this.auth.esPaciente" class="profile-horarios">
+                <button class="btn btn-primary" (click)="mostrarHistoriaClinica()">Historia Clinica</button>
+            </div>
+        </div>
+
+    </div>
+    <div class = "cardClinica" *ngIf="mostrarHistoria"> 
+        <app-historias-clinicas></app-historias-clinicas>
+    </div>
+    <div *ngIf="mostrarHorarios" class="card">
+        <div class="card-header">
+            Seleccione los horarios que emplea (En Azul Oscuro).
+        </div>
+        <div class="card-header">
+            Día de Semana
+        </div>
+        <div class="card-body">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3" *ngFor="let horario of horariosSemana">
+                        <div (click)="toggleHorarioSem(horario)"
+                        [class.selected]="isSelectedSem(horario)" 
+                        [class.noSelected]="!isSelectedSem(horario)" class="fecha">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ horario }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-header">
+        Sabados
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3" *ngFor="let horario of horariosSabado">
+                <div (click)="toggleHorarioSab(horario)"
+                [class.selected]="isSelectedSab(horario)" class="fecha">
+                <div class="card-body">
+                    <h5 class="card-title">{{ horario }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="solicitar" (click)="confirmarHorarios()">Confirmar</button>
+</div>

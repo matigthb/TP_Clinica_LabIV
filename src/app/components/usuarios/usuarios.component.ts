@@ -15,6 +15,8 @@ export class UsuariosComponent implements OnInit{
   admins: any[] = [];
   nuevoUsuario: any = {}; // Asegúrate de tener un objeto para el nuevo usuario
 
+  modalSwitch : boolean = false;
+
   mostrarPacientes : boolean = false;
   mostrarEspecialistasRev : boolean = false;
   mostrarEspecialistas : boolean = false;
@@ -57,8 +59,34 @@ export class UsuariosComponent implements OnInit{
   }
 
   toggleDetalle(usuario: any) {
-    usuario.mostrarDetalle = !usuario.mostrarDetalle;
+      const b = usuario.mostrarDetalle;
+      this.reiniciarCampos();
+      usuario.mostrarDetalle = !b;
   }
+
+  reiniciarCampos()
+  {
+    if(this.pacientes != null)
+    {
+      this.pacientes.forEach((p: { mostrarDetalle: boolean; }) => p.mostrarDetalle = false);
+    }
+
+    if(this.especialistasRev != null)
+    {
+      this.especialistasRev.forEach((p: { mostrarDetalle: boolean; }) => p.mostrarDetalle = false);
+    }
+
+    if(this.especialistas != null)
+    {
+      this.especialistas.forEach((p: { mostrarDetalle: boolean; }) => p.mostrarDetalle = false);
+    }
+
+    if(this.admins != null)
+    {
+      this.admins.forEach((p: { mostrarDetalle: boolean; }) => p.mostrarDetalle = false);
+    }
+  }
+
 
   async habilitarEspecialista(usuario : any)
   {

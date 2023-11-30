@@ -1,0 +1,7 @@
+<h2>Detalle de Logs</h2>
+<div *ngFor="let log of logsUsuario" class="log-item">
+    <p><strong>Usuario:</strong> {{ log.Usuario.Nombre }} {{log.Usuario.Apellido}} - DNI: {{ log.Usuario.Dni}}</p>
+    <p><strong>Fecha de Ingreso:</strong> {{ log.Fecha }}</p>
+    <p><strong>Horario de Ingreso:</strong> {{ log.Horario }}</p>
+    <hr>
+</div>

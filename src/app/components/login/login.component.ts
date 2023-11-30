@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit{
     pass: ['', Validators.required]
   });
 
-  constructor(private toastr : ToastrService ,public formBuilder: FormBuilder, public router : Router, private auth: AuthenticationService) { }
+  constructor(private toastr : ToastrService ,public formBuilder: FormBuilder, public router : Router, private auth: AuthenticationService, private data : DataService) { }
 
   ngOnInit() {
     console.log(this.auth.usuarioLogueado);
@@ -27,23 +28,44 @@ export class LoginComponent implements OnInit{
 
   async login() {
     if (this.loginForm?.valid) {
+      this.auth.isLoading = true;
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.pass;
       
       const loginSuccessful = await this.auth.logIn(email, password);
   
       if (loginSuccessful) {
-        this.router.navigateByUrl('/home');
-      } else {
-        this.toastr.error('Error: Usuario no encontrado o contraseña incorrecta');
+        console.log(this.auth.usuarioLogueado)
+        if(this.auth.usuarioLogueado != null)
+        {
+          this.data.guardarLog(this.auth.usuarioLogueado);
+          this.router.navigateByUrl('/home');
+        }
+        else
+        {
+          this.router.navigateByUrl('/home');
+          this.toastr.error('Error: Usuario no encontrado o contraseña incorrecta');
+        }
       }
+      this.auth.isLoading = false;
     }else{
       this.toastr.error('Error: Usuario no encontrado o contraseña incorrecta');
     }
   }
-
-  reiniciar()
+  
+  ingresoRapido(email :string , pass : string)
   {
-    this.router.navigateByUrl('/register');
+    this.loginForm.patchValue({
+      email: email,
+      pass: pass
+    });
   }
+
+  manejarCredencialesSeleccionadas(credenciales : any) {
+    this.loginForm.patchValue({
+      email: credenciales.email,
+      pass: credenciales.password
+    });
+  }
+
 }

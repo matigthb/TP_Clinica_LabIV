@@ -1,0 +1,72 @@
+.demo-chart {
+    height: 400px;
+  }
+
+  /* Estilos generales */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .card {
+    width: 80%; /* Ajusta el ancho según tus necesidades */
+    margin: 20px auto; /* Centra la card en la página */
+    padding: 20px;
+    background-color: rgb(65, 140, 211); /* Color de fondo de la card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar un efecto de elevación */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+
+  .cardGrafico{
+    width: 80%; /* Ajusta el ancho según tus necesidades */
+    margin: 20px auto; /* Centra la card en la página */
+    padding: 20px;
+    background-color: #cecece; /* Color de fondo de la card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar un efecto de elevación */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+
+  /* Estilos de la fila de botones */
+  .boton-row {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: rgb(65, 140, 211);
+    margin-bottom: 30px;
+  }
+
+  .pdf{
+    margin-top: 50px;
+  }
+
+  /* Estilos del botón */
+
+  .botonPdf
+  {
+    background-color: #ac5252;
+  }
+  .boton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: #000000;
+    transition: background-color 0.3s ease;
+    &:hover{
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+  }
+
+  .botonNn
+  {
+    background-color: #cecece;
+  }
+
+  /* Estilo al pasar el ratón sobre el botón */
+  .boton:hover {
+    background-color: #2980b9;
+  }

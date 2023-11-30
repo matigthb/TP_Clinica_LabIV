@@ -13,9 +13,14 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AuthenticationService {
 
-  public usuarioLogueado : string = "";
+  public usuarioLogueado : any = null;
   public esAdmin : boolean = false;
+  public esEspecialista : boolean = false;
+  public esPaciente : boolean = false;
+  public uid : string = "";
   private usuariosChanged = new Subject<void>();
+  public mailSinConfirmar : string = "";
+  public isLoading : boolean = false;
 
   constructor(private router: Router,private auth : Auth, private afAuth: AngularFireAuth, private firestore: Firestore, private data : DataService, private toastr : ToastrService) { }
 
@@ -28,12 +33,13 @@ export class AuthenticationService {
     const usersCollection = collection(this.firestore, 'Pacientes');
     const timestamp = new Date();
     try {
+      
       await createUserWithEmailAndPassword(this.auth, email,password).then( res => {
         sendEmailVerification(res.user);
-        this.usuarioLogueado = email;
+        this.mailSinConfirmar = email;
       }) ;
-      const uid = await this.getUserUid() || '';
-
+      this.uid = await this.getUserUid() || '';
+      
       await addDoc(usersCollection, {
         Nombre: nombre,
         Apellido: apellido,
@@ -44,9 +50,9 @@ export class AuthenticationService {
         Password: password,
         Foto1: foto1,
         Foto2: foto2,
-        UID: uid
+        UID: this.uid
       });
-
+      
       this.usuariosChanged.next();
       // La operación de escritura en la base de datos ha sido completada con éxito.
       // Puedes devolver algún resultado si lo necesitas, por ejemplo, un mensaje de éxito.
@@ -75,10 +81,10 @@ export class AuthenticationService {
     const timestamp = new Date();
     try {
       await createUserWithEmailAndPassword(this.auth, email,password).then( res => {
-        this.usuarioLogueado = email;
+        this.mailSinConfirmar = email;
         sendEmailVerification(res.user);
       }) ;
-      const uid = await this.getUserUid() || '';
+      this.uid = await this.getUserUid() || '';
 
       console.log(especialidadesArray + nombre);
 
@@ -92,7 +98,7 @@ export class AuthenticationService {
         Email: email,
         Password: password,
         Foto : foto,
-        UID: uid
+        UID: this.uid
       });
 
       
@@ -114,10 +120,10 @@ export class AuthenticationService {
     const timestamp = new Date();
     try {
       await createUserWithEmailAndPassword(this.auth, email,password).then( res => {
-        this.usuarioLogueado = email;
+        this.mailSinConfirmar = email;
         sendEmailVerification(res.user);
       }) ;
-      const uid = await this.getUserUid() || '';
+      this.uid = await this.getUserUid() || '';
 
       await addDoc(usersCollection, {
         Nombre: nombre,
@@ -127,7 +133,7 @@ export class AuthenticationService {
         Email: email,
         Password: password,
         Foto : foto,
-        UID: uid
+        UID: this.uid
       });
 
       
@@ -151,17 +157,27 @@ export class AuthenticationService {
   
       if (user) {
         if (!user.emailVerified) {
-          console.log(email + password + 'El correo electrónico no está verificado');
-          this.usuarioLogueado = email;
+          this.mailSinConfirmar = email;
+          this.uid = "";
+          this.usuarioLogueado = null;
           this.router.navigateByUrl('/verify-email');
           this.toastr.info('El correo electrónico no se encuentra verificado');
           return null; // El correo electrónico no está verificado
         } else {
-          console.log(email + password + 'Autenticación exitosa');
-          const uid = await this.getUserUid() || '';
-          this.usuarioLogueado = await this.data.getUserNameByUID(uid);
-          this.esAdmin = await this.isAdmin(email);
-          return true; // Autenticación exitosa
+          this.uid = await this.getUserUid() || '';
+          if(await this.data.obtenerUIDDeEspecialista(this.uid) == "")
+          {
+            this.esAdmin = await this.isAdmin(email);
+            this.esEspecialista = await this.isEsp(email);
+            this.esPaciente = await this.isPac(email);
+            this.usuarioLogueado = await this.data.getUserByUID(this.uid);
+            return true; // Autenticación exitosa
+          }
+          else
+          {
+            this.toastr.error('Un Admin debe verificar su cuenta de especialista antes de ingresar.');
+            return null; // No se obtuvo un usuario (autenticación fallida)
+          }
         }
       } else {
         this.toastr.error('No se obtuvo un usuario (autenticación fallida)');
@@ -169,7 +185,7 @@ export class AuthenticationService {
       }
     } catch (error) {
       this.toastr.error('Error en la autenticación');
-      this.usuarioLogueado = "";
+      this.usuarioLogueado = null;
       return null; // Manejo de errores
     }
   }
@@ -179,7 +195,35 @@ export class AuthenticationService {
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.map(doc => doc.data() as User);
 
-    if(users != null)
+    if(users.length > 0)
+    {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  async isEsp(email: string): Promise<boolean> {
+    const q = query(collection(this.firestore, 'Especialistas'), where('Email', '==', email));
+    const querySnapshot = await getDocs(q);
+    const users = querySnapshot.docs.map(doc => doc.data() as User);
+
+    if(users.length > 0)
+    {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  async isPac(email: string): Promise<boolean> {
+    const q = query(collection(this.firestore, 'Pacientes'), where('Email', '==', email));
+    const querySnapshot = await getDocs(q);
+    const users = querySnapshot.docs.map(doc => doc.data() as User);
+
+    if(users.length > 0)
     {
       return true;
     }
@@ -202,13 +246,34 @@ export class AuthenticationService {
     });
   }
 
+  
+
   public async reLogin() 
   {
     const uid = await this.getUserUid() || '';
-    this.usuarioLogueado = await this.data.getUserNameByUID(uid);
-    console.log(uid);
+    this.usuarioLogueado = await this.data.getUserByUID(uid);
+    if(this.usuarioLogueado != null)
+    {
+      await this.logIn(this.usuarioLogueado.Email, this.usuarioLogueado.Password)
+      if(this.usuarioLogueado != null)
+      {
+        this.esAdmin = await this.isAdmin(this.usuarioLogueado.Email)
+        this.esEspecialista = await this.isEsp(this.usuarioLogueado.Email)
+        this.esPaciente= await this.isPac(this.usuarioLogueado.Email)
+      }
+    }
+
   }
 
+  public async logOut() 
+  {
+    await this.afAuth.signOut();
+    this.uid = '';
+    this.usuarioLogueado = null;
+    this.esAdmin = false;
+    this.esEspecialista = false;
+    this.esPaciente = false;
+  }
 }
 
 interface User {

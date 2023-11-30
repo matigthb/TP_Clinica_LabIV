@@ -10,13 +10,13 @@
   <div class="container">
     <div class="message">
       <h1>¡Bienvenido!</h1>
-      <p>Hemos enviado un correo a {{this.auth.usuarioLogueado}}</p>
-      <p>Por favor, verifica tu dirección de correo electrónico. {{this.auth.usuarioLogueado}}</p>
+      <p>Hemos enviado un correo a {{this.auth.mailSinConfirmar}}</p>
+      <p>Por favor, verifica tu dirección de correo electrónico antes de continuar.</p>
       <div class="button-container">
-        <button routerLink="../register" class="back-button">
-          <span class="arrow-icon">&#8592;</span> Ir al Registro
+        <button routerLink="/login" class="back-button">
+          <span class="arrow-icon">&#8592;</span> Iniciar Sesión
         </button>
-        <button routerLink="../login"  class="verify-button" >Correo Verificado</button>
+        <button routerLink="/register"  class="verify-button" >Registrar otra cuenta &#8594;</button>
       </div>
     </div>
   </div>

@@ -1,0 +1,38 @@
+<div class="card">
+        <header>
+            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 fw-normal">Historia Clinica</h1>
+            </div>
+        </header>
+        <div class="cardAccion table-responsive" #content>
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                    <th style="width: 30%;">Turno</th>
+                    <th style="width: 10%;">Altura</th>
+                    <th style="width: 10%;">Peso</th>
+                    <th style="width: 10%;">Temperatura</th>
+                    <th style="width: 10%;">Presion</th>
+                    <th style="width: 10%;">Observacion 1</th>
+                    <th style="width: 10%;">Observacion 2</th>
+                    <th style="width: 10%;">Observacion 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class ="containerFila" *ngFor="let turno of turnos">
+                        <th  scope="row" class="text-start">{{turno.Especialidad}} con Dr/a. {{turno.EspecialistaApellido}}<br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} 
+                            </th>
+                        <td>{{ turno.Historia.altura }}</td>
+                        <td>{{ turno.Historia.peso }}</td>
+                        <td>{{ turno.Historia.temperatura }}</td>
+                        <td>{{ turno.Historia.presion  }}</td>
+                        <td *ngIf="turno.Historia.clave1 != ''">{{ turno.Historia.clave1  }}: {{ turno.Historia.valor1  }}</td>
+                        <td *ngIf="turno.Historia.clave2 != ''">{{ turno.Historia.clave2  }}: {{ turno.Historia.valor2  }}</td>
+                        <td *ngIf="turno.Historia.clave3 != ''">{{ turno.Historia.clave3  }}: {{ turno.Historia.valor3  }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button *ngIf="this.auth.esPaciente" class="btn btn-secondary" (click)="makePDF()">Descargar PDF</button>
+        </div>
+</div>

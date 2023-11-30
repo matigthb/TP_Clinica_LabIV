@@ -1,0 +1,246 @@
+.turno{
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    background-color: #1e4949;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.usuariosCards{
+    position: relative;
+}
+.container{
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.btnsregistro{
+    margin-top: 100px;
+}
+
+.reg{
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: #b8ffff;
+    &:hover {
+        color: white;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 70px;
+}
+
+.cancelRazon{
+    width: 700px;
+}
+
+.cardAccion {
+    display: flex;
+    flex-direction: column;
+}
+
+.cerrarControl{
+    height: 60px;
+    border-radius: 10px;
+    width: 400px;
+    margin-left: 5px;
+    background-color: rgb(255, 56, 56);
+    &:hover {
+        color: white;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+textarea {
+    resize: none;
+  }
+
+.button-row
+{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 200px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-row {
+    margin-top: 10px;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    width: 1em;
+    font-size: 2em;
+    color: #0bd185;
+    display: inline-block;
+    margin-right: 0.1em;
+}
+
+.rating label:before {
+    content: '\2605'; /* Estrella en blanco */
+    position: absolute;
+}
+
+.rating input:checked ~ label,
+.rating input:checked ~ label:before {
+    color: rgb(250, 162, 29); /* Color de estrella activa */
+}
+
+.rating h1{
+    margin-top: 20px;
+}
+
+.form-group{
+    margin-bottom: 30px;
+}
+
+.valor{
+    margin-left: 10px;
+}
+
+.cardAccion{
+    width: 90%;
+    padding: 20px;
+    margin-left: 60px;
+    background-color: #224870;
+    margin-top: 20px;
+}
+
+.table{
+    background-color: #224870;
+}
+
+.containerHC{
+    align-items: center;
+    justify-content: center;
+}
+
+.btn{
+    background-color: #c35959;
+    margin-top: 15px;
+}
+
+.filtro{
+    margin-bottom: 20px;
+}
+label{
+    margin-right: 10px;
+}
+
+.registros{
+    margin-left : -250px;
+}
+
+h2{
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.acciones{
+    margin-top: 5px;
+}
+
+.botones{
+    width: 100px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+.rechazar{
+    margin-left: 5px;
+    background-color: red;
+    &:hover {
+        color: white;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+.habilitar{
+    margin-left: 5px;
+    background-color: green;
+    &:hover {
+        color: white;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+h3{
+    user-select: none;
+}
+
+.detalle{
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-row {
+    margin-top: 10px;
+}
+
+.card{
+    width: 85vw;
+    padding: 20px;
+    margin-left: 30px;
+    background-color: #224870;
+    margin-top: 20px;
+    overflow-x: hidden;
+}
+
+.primercard{
+    margin-top: 80px;
+}
+
+@import '~font-awesome/css/font-awesome.min.css';

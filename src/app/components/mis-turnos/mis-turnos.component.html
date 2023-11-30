@@ -1,0 +1,254 @@
+<div class="card">
+    <div class = "header">
+        <h3>MIS TURNOS   </h3>
+        <form [formGroup]="filtro">
+            <button class="btn btn-primary" (click)="filtrarClick()">Filtrar</button>
+        </form>
+        <input *ngIf="filtrar" type="text" (input)="onInputChange()" [(ngModel)]="busqueda" class="filtro form-control form-control-lg" />
+    </div>
+    <div *ngIf="!filtrar"> 
+        <div class="turno" *ngFor="let turno of turnos">
+            <div class="header">
+            <h2>{{turno.Especialidad | capitalizarPrimeraLetra}} con Dr/a: {{turno.EspecialistaApellido | capitalizarPrimeraLetra}} <br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>ESTADO:{{turno.Estado}}</h4> </h2>
+            </div>
+            <div *ngIf="turno.mostrarCalificar == false && turno.mostrarCancelar == false && turno.mostrarEncuesta == false && turno.mostrarResenia == false; else botonCancelar" class="acciones">
+                <button *ngIf="turno.Estado != 'Finalizado' && turno.Estado != 'Rechazado' && turno.Estado != 'Cancelado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+                <button *ngIf="turno.Resenia != ''"  (click)="toggleResenia(turno)" class="botones habilitar">Ver Reseña</button>
+                <button *ngIf="turno.Resenia != '' && turno.EncSatisfecho == '' && turno.Estado == 'Finalizado' "  (click)="toggleEncuesta(turno)" class="botones habilitar">Encuesta</button>
+                <button *ngIf="turno.Calificacion == '' && turno.Estado == 'Finalizado'"  (click)="toggleCalificar(turno)" class="botones habilitar">Calificar</button>
+            </div>
+            <ng-template #botonCancelar>
+                <!-- Contenido si la condición es falsa -->
+                <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+              </ng-template>
+            <div *ngIf="turno.mostrarCancelar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                    </form>
+                    <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarResenia">
+                <h2>
+                    Reseña del Especialista: {{turno.Resenia}}
+                </h2>
+            </div>
+            <div *ngIf="turno.mostrarEncuesta">
+                <div class = "cardAccion">
+                    <form [formGroup]="alta" (ngSubmit)="enviarEncuesta(turno)">
+                        <!-- Preguntas de la encuesta -->
+                        <div class="form-group">
+                          <label for="recomendacion">¿Estas satisfecho con tu diagnóstico?</label>
+                          <select id="recomendacion" class="form-control formReco" formControlName="recomendacion">
+                            <option value="si">Si</option>
+                            <option value="no">No</option>
+                          </select>
+                        </div>
+                
+                        <div class="form-group">
+                          <label>¿Cual de estas cualidades destacás más sobre el proceso médico de la Clínica?</label>
+                          <div class="form-check">
+                            <input type="radio" id="Limpieza" class="form-check-input" value="Limpieza" formControlName="cualidad">
+                            <label for="Limpieza" class="form-check-label">Limpieza</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="radio" id="Atencion" class="form-check-input" value="Atencion" formControlName="cualidad">
+                            <label for="Atencion" class="form-check-label">Atención del Especialista</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="radio" id="Rapidez" class="form-check-input" value="Rapidez" formControlName="cualidad">
+                              <label for="Rapidez" class="form-check-label">Rápida realización de estudios</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="radio" id="Seguridad" class="form-check-input" value="Seguridad" formControlName="cualidad">
+                              <label for="Seguridad" class="form-check-label">Seguridad</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="radio" id="Ninguna" class="form-check-input" value="Ninguna" formControlName="cualidad">
+                            <label for="Ninguna" class="form-check-label">Ninguna de las anteriores.</label>
+                        </div>
+                          <!-- Agrega más opciones según sea necesario -->
+                        </div>
+                
+                        <div class="form-group">
+                          <label>Marca las situaciones que más identifiquen tu experiencia:</label>
+                          <div class="form-check">
+                            <input type="checkbox" id="Ahorcado" class="form-check-input" formControlName="amabilidad">
+                            <label for="Ahorcado" class="form-check-label">Amabilidad y profesionalismo del personal</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="checkbox" id="MayorMenor" class="form-check-input" formControlName="demoras">
+                            <label for="MayorMenor" class="form-check-label">Pocas Demoras</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="checkbox" id="Preguntados" class="form-check-input"  formControlName="registro">
+                            <label for="Preguntados" class="form-check-label">Velóz proceso de registro y admisión</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="checkbox" id="Banderas" class="form-check-input" formControlName="plan">
+                              <label for="Banderas" class="form-check-label">Buen plan de seguimiento/tratamiento a largo o mediano plazo</label>
+                            </div>
+                          </div>
+
+                          
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary" [disabled]="alta.invalid">Enviar</button>
+                        </div>
+                      </form>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarCalificar">
+                <div class="cardAccion">
+                    <h1>Calificación</h1>
+                    <div class="rating">
+                        <input type="radio" id="star5" name="rating" value="5"  [(ngModel)]="estrellas"/>
+                        <label for="star5"></label>
+                        <input type="radio" id="star4" name="rating" value="4" [(ngModel)]="estrellas"/>
+                        <label for="star4"></label>
+                        <input type="radio" id="star3" name="rating" value="3" [(ngModel)]="estrellas"/>
+                        <label for="star3"></label>
+                        <input type="radio" id="star2" name="rating" value="2" [(ngModel)]="estrellas"/>
+                        <label for="star2"></label>
+                        <input type="radio" id="star1" name="rating" value="1" [(ngModel)]="estrellas"/>
+                        <label for="star1"></label>
+                    </div>
+                    <div class="comment-section">
+                        <div class="comment-row">
+                            <label for="comment">Comentario:</label>
+                            <textarea id="comment" name="comment" rows="4" cols="50" [(ngModel)]="comentario"></textarea>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btnCalificar" [disabled]="comentario==''" (click)="guardarCalificacion(turno)">Calificar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="filtrar"> 
+        <div class="turno" *ngFor="let turno of turnosFiltrados">
+            <div class="header">
+            <h2>{{turno.Especialidad}} con Dr/a: {{turno.EspecialistaApellido}} <br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>ESTADO:{{turno.Estado}}</h4> </h2>
+            </div>
+            <div *ngIf="turno.mostrarCalificar == false && turno.mostrarCancelar == false && turno.mostrarEncuesta == false && turno.mostrarResenia == false" class="acciones">
+                <button *ngIf="turno.Estado != 'Finalizado' && turno.Estado != 'Rechazado' && turno.Estado != 'Cancelado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+                <button *ngIf="turno.Resenia != ''"  (click)="toggleResenia(turno)" class="botones habilitar">Ver Reseña</button>
+                <button *ngIf="turno.Resenia == '' && turno.EncSatisfecho == '' && turno.Estado != 'Realizado' "  (click)="toggleEncuesta(turno)" class="botones habilitar">Encuesta</button>
+                <button *ngIf="turno.Calificacion == '' && turno.Estado != 'Realizado'"  (click)="toggleCalificar(turno)" class="botones habilitar">Calificar</button>
+            </div>
+            <div *ngIf="!(turno.mostrarCalificar == false && turno.mostrarCancelar == false && turno.mostrarEncuesta == false && turno.mostrarResenia == false)">
+                <!-- Contenido si la condición es falsa -->
+                <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+            </div>
+            <div *ngIf="turno.mostrarCancelar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                    </form>
+                    <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarResenia">
+                <h2>
+                    Reseña del Especialista: {{turno.Resenia}}
+                </h2>
+            </div>
+            <div *ngIf="turno.mostrarEncuesta">
+                <div class = "cardAccion">
+                    <form [formGroup]="alta" (ngSubmit)="enviarEncuesta(turno)">
+                        <!-- Preguntas de la encuesta -->
+                        <div class="form-group">
+                          <label for="recomendacion">¿Estas satisfecho con tu diagnóstico?</label>
+                          <select id="recomendacion" class="form-control formReco" formControlName="recomendacion">
+                            <option value="si">Si</option>
+                            <option value="no">No</option>
+                          </select>
+                        </div>
+                
+                        <div class="form-group">
+                          <label>¿Cual de estas cualidades destacás más sobre el proceso médico de la Clínica?</label>
+                          <div class="form-check">
+                            <input type="radio" id="Limpieza" class="form-check-input" value="Limpieza" formControlName="cualidad">
+                            <label for="Limpieza" class="form-check-label">Limpieza</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="radio" id="Atencion" class="form-check-input" value="Atencion" formControlName="cualidad">
+                            <label for="Atencion" class="form-check-label">Atención del Especialista</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="radio" id="Rapidez" class="form-check-input" value="Rapidez" formControlName="cualidad">
+                              <label for="Rapidez" class="form-check-label">Rápida realización de estudios</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="radio" id="Seguridad" class="form-check-input" value="Seguridad" formControlName="cualidad">
+                              <label for="Seguridad" class="form-check-label">Seguridad</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="radio" id="Ninguna" class="form-check-input" value="Ninguna" formControlName="cualidad">
+                            <label for="Ninguna" class="form-check-label">Ninguna de las anteriores.</label>
+                        </div>
+                          <!-- Agrega más opciones según sea necesario -->
+                        </div>
+                
+                        <div class="form-group">
+                          <label>Marca las situaciones que más identifiquen tu experiencia:</label>
+                          <div class="form-check">
+                            <input type="checkbox" id="a" class="form-check-input" formControlName="amabilidad">
+                            <label for="a" class="form-check-label">Amabilidad y profesionalismo del personal</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="checkbox" id="pd" class="form-check-input" formControlName="demoras">
+                            <label for="pd" class="form-check-label">Pocas Demoras</label>
+                          </div>
+                          <div class="form-check">
+                            <input type="checkbox" id="v" class="form-check-input"  formControlName="registro">
+                            <label for="v" class="form-check-label">Velóz proceso de registro y admisión</label>
+                          </div>
+                          <div class="form-check">
+                              <input type="checkbox" id="plan" class="form-check-input" formControlName="plan">
+                              <label for="plan" class="form-check-label">Buen plan de seguimiento/tratamiento a largo o mediano plazo</label>
+                            </div>
+                          </div>
+
+                          
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary" [disabled]="alta.invalid">Enviar</button>
+                        </div>
+                      </form>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarCalificar">
+                <div class="cardAccion">
+                    <h1>Calificación</h1>
+                    <div class="rating">
+                        <input type="radio" id="star5" name="rating" value="5"  [(ngModel)]="estrellas"/>
+                        <label for="star5"></label>
+                        <input type="radio" id="star4" name="rating" value="4" [(ngModel)]="estrellas"/>
+                        <label for="star4"></label>
+                        <input type="radio" id="star3" name="rating" value="3" [(ngModel)]="estrellas"/>
+                        <label for="star3"></label>
+                        <input type="radio" id="star2" name="rating" value="2" [(ngModel)]="estrellas"/>
+                        <label for="star2"></label>
+                        <input type="radio" id="star1" name="rating" value="1" [(ngModel)]="estrellas"/>
+                        <label for="star1"></label>
+                    </div>
+                    <div class="comment-section">
+                        <div class="comment-row">
+                            <label for="comment">Comentario:</label>
+                            <textarea id="comment" name="comment" rows="4" cols="50" [(ngModel)]="comentario"></textarea>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btnCalificar" [disabled]="comentario==''" (click)="guardarCalificacion(turno)">Calificar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

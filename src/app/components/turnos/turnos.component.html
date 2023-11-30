@@ -1,0 +1,65 @@
+<div class="card">
+    <div class = "header">
+        <h3>TURNOS   </h3>
+        <form [formGroup]="filtro">
+            <label class="form-label" for="form3Example4cg">Filtrar por:</label>
+            
+            <input type="radio" id="Especialidad" class="form-check-input" value="Especialidad" (change)="onRadioChange($event)" formControlName="por">
+            <label for="Ahorcado" class="form-check-label">Especialidad</label>
+            
+            <input type="radio" id="Especialista" class="form-check-input" value="Paciente" (change)="onRadioChange($event)" formControlName="por">
+            <label for="Ahorcado" class="form-check-label">Paciente</label>
+
+            <input type="radio" id="Especialista" class="form-check-input" value="Especialista" (change)="onRadioChange($event)" formControlName="por">
+            <label for="Ahorcado" class="form-check-label">Especialista</label>
+        </form>
+        <input *ngIf="filtrar" type="text" (input)="onInputChange()" [(ngModel)]="busqueda" class="filtro form-control form-control-lg" />
+    </div>
+    <div *ngIf="!filtrar"> 
+        <div class="turno" *ngFor="let turno of turnos">
+            <div class="header">
+                <h2>{{turno.PacienteNombre | capitalizarPrimeraLetra}} {{turno.PacienteApellido | capitalizarPrimeraLetra}} en {{turno.Especialidad}} con Dr/a. {{turno.EspecialistaApellido}}<br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>{{turno.Estado}}</h4> </h2>
+                </div>
+                <div *ngIf="turno.mostrarCancelar == false" class="acciones">
+                    <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+                </div>
+                <div *ngIf="turno.mostrarCancelar">
+                    <div class = "cardAccion">
+                        <form [formGroup]="accionesBtn">
+                            <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                            <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                        </form>
+                        <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                    </div>
+                </div>
+                <div *ngIf="turno.mostrarCancelar">
+                    <!-- Contenido si la condición es falsa -->
+                    <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+                </div>
+        </div>
+    </div>
+
+    <div *ngIf="filtrar"> 
+        <div class="turno" *ngFor="let turno of turnosFiltrados">
+            <div class="header">
+            <h2>{{turno.PacienteNombre | capitalizarPrimeraLetra}} {{turno.PacienteApellido | capitalizarPrimeraLetra}} en {{turno.Especialidad}} con Dr/a. {{turno.EspecialistaApellido}}<br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>ESTADO: {{turno.Estado}}</h4> </h2>
+            </div>
+            <div *ngIf="turno.mostrarCancelar == false" class="acciones">
+                <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+            </div>
+            <div *ngIf="turno.mostrarCancelar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                    </form>
+                    <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarCancelar">
+                <!-- Contenido si la condición es falsa -->
+                <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

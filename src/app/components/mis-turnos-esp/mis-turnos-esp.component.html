@@ -1,0 +1,248 @@
+<div class="card">
+    <div class = "header">
+        <h3>MIS TURNOS   </h3>
+        <form [formGroup]="filtro">
+            <button class="btn btn-primary" (click)="filtrarClick()">Filtrar</button>
+        </form>
+        <input *ngIf="filtrar" type="text" (input)="onInputChange()" [(ngModel)]="busqueda" class="filtro form-control form-control-lg" />
+    </div>
+    <div *ngIf="!filtrar"> 
+        <div class="turno" *ngFor="let turno of turnos">
+            <div class="header">
+            <h2>{{turno.PacienteNombre | capitalizarPrimeraLetra}} {{turno.PacienteApellido | capitalizarPrimeraLetra}} en {{turno.Especialidad}} <br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>ESTADO: {{turno.Estado}}</h4> </h2>
+            </div>
+            <div *ngIf="turno.mostrarRechazar == false && turno.mostrarCancelar == false && turno.mostrarResenia == false && turno.mostrarFinalizar == false" class="acciones">
+                <button *ngIf="turno.Estado == 'Pendiente de Aprobación'"  (click)="toggleRechazar(turno)" class="botones rechazar">Rechazar</button>
+                <button *ngIf="turno.Estado == 'Pendiente de Aprobación'" (click)="aceptarTurno(turno)" class="botones habilitar">Aceptar</button>
+                <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+                <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleFinalizar(turno)" class="botones habilitar">Finalizar</button>
+                <button *ngIf="turno.Resenia != '' && turno.Estado == 'Finalizado'"  (click)="toggleResenia(turno)" class="botones habilitar">Ver Reseña</button>
+            </div>
+            <div *ngIf="turno.mostrarCancelar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                    </form>
+                    <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarRechazar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del rechazo.</label>
+                    </form>
+                    <button class="btn" (click)="RechazarTurno(turno)">Rechazar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarFinalizar">
+                <div class = "cardAccion">
+                    <div class="comment-section">
+
+                            <div class="containerHC">
+                                <h2>Actualizar Historia Clínica</h2>
+                                <form [formGroup]="historia">
+                                <!-- Datos fijos -->
+                                <div class="form-group">
+                                    <label for="altura">Altura (mts):</label>
+                                    <input type="text" id="altura" formControlName="altura">
+                                    <div *ngIf="historia.controls['altura'].errors != null">
+                                        <small *ngIf="historia.controls['altura'].errors['required'] && historia.controls['altura'].touched">¡La altura es requerida!</small>
+                                        <small *ngIf="historia.controls['altura'].errors['pattern'] && historia.controls['altura'].touched">¡La altura debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="peso">Peso (kg):</label>
+                                    <input type="text" id="peso" formControlName="peso">
+                                    <div *ngIf="historia.controls['peso'].errors != null">
+                                        <small *ngIf="historia.controls['peso'].errors['required'] && historia.controls['peso'].touched">¡El peso es requerido!</small>
+                                        <small *ngIf="historia.controls['peso'].errors['pattern'] && historia.controls['peso'].touched">¡El peso debe ser válido!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="temperatura">Temperatura (°C):</label>
+                                    <input type="text" id="temperatura" formControlName="temperatura">
+                                    <div *ngIf="historia.controls['temperatura'].errors != null">
+                                        <small *ngIf="historia.controls['temperatura'].errors['required'] && historia.controls['temperatura'].touched">¡La temperatura es requerida!</small>
+                                        <small *ngIf="historia.controls['temperatura'].errors['pattern'] && historia.controls['temperatura'].touched">¡La temperatura debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="presion">Presión (mm Hg):</label>
+                                    <input type="text" id="presion" formControlName="presion">
+                                    <div *ngIf="historia.controls['presion'].errors != null">
+                                        <small *ngIf="historia.controls['presion'].errors['required'] && historia.controls['presion'].touched">¡La presion es requerida!</small>
+                                        <small *ngIf="historia.controls['presion'].errors['pattern'] && historia.controls['presion'].touched">¡La presion debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <h2>Datos Opcionales</h2>
+
+                                <!-- Datos dinámicos -->
+                                <div class="form-group">
+                                    <label for="clave1">Clave 1:</label>
+                                    <input type="text" id="clave1" formControlName="clave1">
+                                    <label class="valor" for="valor1">Valor 1:</label>
+                                    <input type="text" id="valor1" formControlName="valor1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clave2">Clave 2:</label>
+                                    <input type="text" id="clave2" formControlName="clave2">
+                                    <label class="valor" for="valor2">Valor 2:</label>
+                                    <input type="text" id="valor2" formControlName="valor2">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clave3">Clave 3:</label>
+                                    <input type="text" id="clave3" formControlName="clave3">
+                                    <label class="valor" for="valor3">Valor 3:</label>
+                                    <input type="text" id="valor3" formControlName="valor3">
+                                </div>
+                                </form>
+                            </div>
+
+                        <div class="comment-row">
+                            <label for="comment">Comentario/Reseña (Obligatorio):</label>
+                            <textarea id="comment" name="comment" rows="4" cols="50" [(ngModel)]="comentario"></textarea>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btnCalificar" [disabled]="comentario=='' || !historia.valid" (click)="finalizarTurno(turno)">Finalizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarResenia">
+                <h3>{{turno.Resenia}}</h3>
+            </div>
+            <div *ngIf="!(turno.mostrarRechazar == false && turno.mostrarCancelar == false && turno.mostrarResenia == false && turno.mostrarFinalizar == false)">
+                <!-- Contenido si la condición es falsa -->
+                <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="filtrar"> 
+        <div class="turno" *ngFor="let turno of turnosFiltrados">
+            <div class="header">
+            <h2>{{turno.PacienteNombre}} {{turno.PacienteApellido}} en {{turno.Especialidad}} <br>Fecha: {{ this.datePipe.transform(turno.Fecha.toDate(), 'dd-MM') }} Hora: {{ turno.Horario }} <br> <h4>ESTADO: {{turno.Estado}}</h4> </h2>
+            </div>
+            <div *ngIf="turno.mostrarRechazar == false && turno.mostrarCancelar == false && turno.mostrarResenia == false && turno.mostrarFinalizar == false" class="acciones">
+                <button *ngIf="turno.Estado == 'Pendiente de Aprobación'"  (click)="toggleRechazar(turno)" class="botones rechazar">Rechazar</button>
+                <button *ngIf="turno.Estado == 'Pendiente de Aprobación'" (click)="aceptarTurno(turno)" class="botones habilitar">Aceptar</button>
+                <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleCancelar(turno)" class="botones rechazar">Cancelar</button>
+                <button *ngIf="turno.Estado == 'Aceptado'"  (click)="toggleFinalizar(turno)" class="botones habilitar">Finalizar</button>
+                <button *ngIf="turno.Resenia != '' && turno.Estado == 'Finalizado'"  (click)="toggleResenia(turno)" class="botones habilitar">Ver Reseña</button>
+            </div>
+            <div *ngIf="turno.mostrarCancelar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del cancelamiento.</label>
+                    </form>
+                    <button class="btn" (click)="CancelarTurno(turno)">Cancelar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarRechazar">
+                <div class = "cardAccion">
+                    <form [formGroup]="accionesBtn">
+                        <input type="text" formControlName="cancel" class="cancelRazon form-control form-control-lg"/>
+                        <label for="cancel" class="form-check-label">Especifique la razón del rechazo.</label>
+                    </form>
+                    <button class="btn" (click)="RechazarTurno(turno)">Rechazar</button>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarFinalizar">
+                <div class = "cardAccion">
+                    <div class="comment-section">
+
+                            <div class="containerHC">
+                                <h2>Actualizar Historia Clínica</h2>
+                                <form [formGroup]="historia">
+                                <!-- Datos fijos -->
+                                <div class="form-group">
+                                    <label for="altura">Altura (mts):</label>
+                                    <input type="text" id="altura" formControlName="altura">
+                                    <div *ngIf="historia.controls['altura'].errors != null">
+                                        <small *ngIf="historia.controls['altura'].errors['required'] && historia.controls['altura'].touched">¡La altura es requerida!</small>
+                                        <small *ngIf="historia.controls['altura'].errors['pattern'] && historia.controls['altura'].touched">¡La altura debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="peso">Peso (kg):</label>
+                                    <input type="text" id="peso" formControlName="peso">
+                                    <div *ngIf="historia.controls['peso'].errors != null">
+                                        <small *ngIf="historia.controls['peso'].errors['required'] && historia.controls['peso'].touched">¡El peso es requerido!</small>
+                                        <small *ngIf="historia.controls['peso'].errors['pattern'] && historia.controls['peso'].touched">¡El peso debe ser válido!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="temperatura">Temperatura (°C):</label>
+                                    <input type="text" id="temperatura" formControlName="temperatura">
+                                    <div *ngIf="historia.controls['temperatura'].errors != null">
+                                        <small *ngIf="historia.controls['temperatura'].errors['required'] && historia.controls['temperatura'].touched">¡La temperatura es requerida!</small>
+                                        <small *ngIf="historia.controls['temperatura'].errors['pattern'] && historia.controls['temperatura'].touched">¡La temperatura debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="presion">Presión (mm Hg):</label>
+                                    <input type="text" id="presion" formControlName="presion">
+                                    <div *ngIf="historia.controls['presion'].errors != null">
+                                        <small *ngIf="historia.controls['presion'].errors['required'] && historia.controls['presion'].touched">¡La presion es requerida!</small>
+                                        <small *ngIf="historia.controls['presion'].errors['pattern'] && historia.controls['presion'].touched">¡La presion debe ser válida!</small>
+                                      </div>
+                                </div>
+
+                                <h2>Datos Opcionales</h2>
+
+                                <!-- Datos dinámicos -->
+                                <div class="form-group">
+                                    <label for="clave1">Clave 1:</label>
+                                    <input type="text" id="clave1" formControlName="clave1">
+                                    <label class="valor" for="valor1">Valor 1:</label>
+                                    <input type="text" id="valor1" formControlName="valor1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clave2">Clave 2:</label>
+                                    <input type="text" id="clave2" formControlName="clave2">
+                                    <label class="valor" for="valor2">Valor 2:</label>
+                                    <input type="text" id="valor2" formControlName="valor2">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clave3">Clave 3:</label>
+                                    <input type="text" id="clave3" formControlName="clave3">
+                                    <label class="valor" for="valor3">Valor 3:</label>
+                                    <input type="text" id="valor3" formControlName="valor3">
+                                </div>
+                                </form>
+                            </div>
+
+                        <div class="comment-row">
+                            <label for="comment">Comentario/Reseña (Obligatorio):</label>
+                            <textarea id="comment" name="comment" rows="4" cols="50" [(ngModel)]="comentario"></textarea>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btnCalificar" [disabled]="comentario=='' || !historia.valid" (click)="finalizarTurno(turno)">Finalizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="turno.mostrarResenia">
+                <h3>{{turno.Resenia}}</h3>
+            </div>
+            <div *ngIf="!(turno.mostrarRechazar == false && turno.mostrarCancelar == false && turno.mostrarResenia == false && turno.mostrarFinalizar == false)">
+                <!-- Contenido si la condición es falsa -->
+                <button (click)="reiniciarCampos()" class="cerrarControl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

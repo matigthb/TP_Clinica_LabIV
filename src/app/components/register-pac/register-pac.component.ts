@@ -11,23 +11,18 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./register-pac.component.css']
 })
 export class RegisterPacComponent implements OnInit {
-  nombre : string = ""
-  apellido : string = ""
-  dni : number = 0
-  edad : number = 0
-  obraSocial : string = ""
-  mail : string = ""
-  password : string = ""
   foto1 : string = ""
   foto2 : string = ""
+
+  siteKey : string ="6LeswB8pAAAAAJSSf1KiQiMTaE-WyOjjdQXHCBck"
 
   vieneDeRegistro : boolean = false;
 
   registerForm: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
-    dni: ['', Validators.required],
-    edad: ['', Validators.required],
+    nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    dni: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    edad: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     obraSocial: ['', Validators.required],
     mail: [
       '',
@@ -40,6 +35,7 @@ export class RegisterPacComponent implements OnInit {
     password: ['', Validators.required],
     foto1: ['', Validators.required],
     foto2: ['', Validators.required],
+    recaptcha: ['', Validators.required]
   });
 
   constructor(public formBuilder: FormBuilder,private toastr: ToastrService, private router: Router, private auth:AuthenticationService, private dataServ : DataService, public route: ActivatedRoute) {
@@ -52,17 +48,6 @@ export class RegisterPacComponent implements OnInit {
 
   async OnRegisterClick() {
     if (this.registerForm.valid) {
-      /*Object.keys(this.registerForm.controls).forEach(key => {
-        const controlValue = this.registerForm.get(key)?.value;
-        console.log(`Valor de ${key}: ${controlValue}`);
-        
-        const controlErrors = this.registerForm.get(key)?.errors;
-        if (controlErrors != null) {
-          Object.keys(controlErrors).forEach(keyError => {
-            console.error(`Control ${key} tiene el error ${keyError}`);
-          });
-        }
-      });*/
 
       try {
         const success = await this.auth.registerPac(
@@ -73,8 +58,8 @@ export class RegisterPacComponent implements OnInit {
           this.registerForm.value.obraSocial,
           this.registerForm.value.mail,
           this.registerForm.value.password,
-          this.registerForm.value.foto1,
-          this.registerForm.value.foto2,
+          this.foto1,
+          this.foto2,
         );
   
         if (success) {

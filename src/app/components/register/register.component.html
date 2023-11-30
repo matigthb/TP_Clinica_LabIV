@@ -1,6 +1,12 @@
+<router-outlet *ngIf="this.router.url != '/register'"></router-outlet>
 <div class="container">
-  <div class="btnsregistro">
-      <button routerLink="../register-pac" class="reg">Registrar Paciente</button> 
-      <button routerLink="../register-esp" class = "reg">Registrar Especialista</button> 
+  <div *ngIf="this.router.url == '/register'" class="btnsregistro">
+    <button routerLink="register-pac" class="reg">
+      <img src="../../../assets/pacienteDef.jpg" alt="Icono Paciente">
+    </button> 
+    
+    <button routerLink="register-esp" class="reg">
+      <img src="../../../assets/docDef.jpg" alt="Icono Especialista">
+    </button> 
   </div>
 </div>

@@ -12,10 +12,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterAdmComponent implements OnInit {
   registerForm: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
-    dni: ['', Validators.required],
-    edad: ['', Validators.required],
+    nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    dni: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    edad: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     mail: [
       '',
       [
@@ -25,8 +25,13 @@ export class RegisterAdmComponent implements OnInit {
       ],
     ],
     password: ['', Validators.required],
-    foto: ['', Validators.required]
+    foto: ['', Validators.required],
+    recaptcha: ['', Validators.required]
   });
+
+  foto : string = "";
+
+  siteKey : string ="6LeswB8pAAAAAJSSf1KiQiMTaE-WyOjjdQXHCBck"
 
   vieneDeRegistro : boolean = false;
 
@@ -49,7 +54,7 @@ export class RegisterAdmComponent implements OnInit {
           this.registerForm.value.dni,
           this.registerForm.value.mail,
           this.registerForm.value.password,
-          this.registerForm.value.foto
+          this.foto
         );
   
         if (success) {
@@ -77,7 +82,8 @@ export class RegisterAdmComponent implements OnInit {
       reader.readAsDataURL(file);
 
       reader.onload = () => {
-          this.registerForm.value.foto = reader.result as string;
+          this.foto = reader.result as string;
+          console.log(this.foto)
       };
     }
   }

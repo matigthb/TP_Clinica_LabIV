@@ -11,38 +11,68 @@
                       <form [formGroup]="registerForm">
                         
                         <div class="form-outline mb-4">
-                          <input type="text" formControlName="nombre" class="form-control form-control-lg" />
+                          <input type="text" appSoloLetras formControlName="nombre" class="form-control form-control-lg" />
                           <label class="form-label" for="form3Example1cg">Nombre</label>
+                          <div *ngIf="registerForm.controls['nombre'].errors != null">
+                            <small *ngIf="registerForm.controls['nombre'].errors['required'] && registerForm.controls['nombre'].touched">¡El Nombre es requerido!</small>
+                            <small *ngIf="registerForm.controls['nombre'].errors['pattern'] && registerForm.controls['nombre'].touched">¡El Nombre debe ser válido!</small>
+                          </div>
                         </div>
                         
                         <div class="form-outline mb-4">
-                          <input type="email" formControlName="apellido" class="form-control form-control-lg" />
+                          <input type="email" appSoloLetras formControlName="apellido" class="form-control form-control-lg" />
                           <label class="form-label" for="form3Example3cg">Apellido</label>
+                          <div *ngIf="registerForm.controls['apellido'].errors != null">
+                            <small *ngIf="registerForm.controls['apellido'].errors['required'] && registerForm.controls['apellido'].touched">¡El Apellido es requerido!</small>
+                            <small *ngIf="registerForm.controls['apellido'].errors['pattern'] && registerForm.controls['apellido'].touched">¡El Apellido debe ser válido!</small>
+                          </div>
                         </div>
                         
                         <div class="form-outline mb-4">
-                          <input type="text" formControlName="edad" class="form-control form-control-lg" />
+                          <input type="text" appSoloNumeros formControlName="edad" class="form-control form-control-lg" />
                           <label class="form-label" for="form3Example4cg">Edad</label>
+                          <div *ngIf="registerForm.controls['edad'].errors != null">
+                            <small *ngIf="registerForm.controls['edad'].errors['required'] && registerForm.controls['edad'].touched">¡La edad es requerida!</small>
+                            <small *ngIf="registerForm.controls['edad'].errors['pattern'] && registerForm.controls['edad'].touched">¡La edad debe ser válida!</small>
+                          </div>
                         </div>
 
                         <div class="form-outline mb-4">
-                          <input type="text" formControlName="dni" class="form-control form-control-lg" />
+                          <input type="text" appSoloNumeros formControlName="dni" class="form-control form-control-lg" />
                           <label class="form-label" for="form3Example4cdg">DNI</label>
+                          <div *ngIf="registerForm.controls['dni'].errors != null">
+                            <small *ngIf="registerForm.controls['dni'].errors['required'] && registerForm.controls['dni'].touched">¡El DNI es requerido!</small>
+                            <small *ngIf="registerForm.controls['dni'].errors['pattern'] && registerForm.controls['dni'].touched">¡El DNI debe ser válido!</small>
+                          </div>
                         </div>
 
                         <div class="form-outline mb-4">
                           <input type="text" formControlName="mail" class="form-control form-control-lg" />
                           <label class="form-label" for="form3Example4cdg">Mail</label>
+                          <div *ngIf="registerForm.controls['mail'].errors != null">
+                            <small *ngIf="registerForm.controls['mail'].errors['required'] && registerForm.controls['mail'].touched">¡El Mail es requerido!</small>
+                            <small *ngIf="registerForm.controls['mail'].errors['pattern'] && registerForm.controls['mail'].touched">¡El Mail debe ser válido!</small>
+                          </div>
                         </div>
 
                         <div class="form-outline mb-4">
                           <input type="password" formControlName="password" class="form-control form-control-lg" />
-                          <label class="form-label" for="form3Example4cdg">Password</label>
+                          <label class="form-label" for="form3Example4cdg">Contraseña</label>
+                          <div *ngIf="registerForm.controls['password'].errors != null">
+                            <small *ngIf="registerForm.controls['password'].errors['required'] && registerForm.controls['password'].touched">¡La Contraseña es requerida!</small>
+                            <small *ngIf="registerForm.controls['password'].errors['pattern'] && registerForm.controls['password'].touched">¡La Contraseña debe tener 6 dígitos o más!</small>
+                          </div>
                         </div>
                         
                         <div class="input-group mb-1">
                             <input type="file" class="form-control btn-outline-secondary" formControlName="foto" accept="image/*"(change)="handleFileInput($event)">
                         </div>
+
+                        <ngx-recaptcha2 #captchaElem
+                          [siteKey]="siteKey"
+                          
+                          formControlName="recaptcha">
+                        </ngx-recaptcha2>
 
                         <div class="d-flex justify-content-center">
                           <button type="button"

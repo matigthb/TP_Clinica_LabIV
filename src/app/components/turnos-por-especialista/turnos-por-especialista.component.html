@@ -1,0 +1,6 @@
+<div id="turnosPorEspecialistaChart" style="height: 400px;"></div>
+<label for="fecha">Seleccione fecha Inicial:</label>
+<input type="date" id="fecha" name="fecha" [(ngModel)]="fechaSeleccionada1" (change)="onFechaInicioChange($event)">
+<label for="fecha">Seleccione fecha Final:</label>
+<input type="date" id="fecha" name="fecha" [(ngModel)]="fechaSeleccionada2" (change)="onFechaFinChange($event)">
+<h1 *ngIf="fechaSeleccionada1 == '' || fechaSeleccionada2 == ''">Por favor seleccione el rango de fechas que desea utilizar.</h1>

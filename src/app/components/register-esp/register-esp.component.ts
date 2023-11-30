@@ -16,14 +16,17 @@ export class RegisterEspComponent implements OnInit{
   selectedSpecialties: string[] = [];
   especialidadesAgregadas : string[] = [];
   especialidadesOtras: string[] = [];
+  foto : string = "";
+
+  siteKey : string ="6LeswB8pAAAAAJSSf1KiQiMTaE-WyOjjdQXHCBck"
 
   vieneDeRegistro : boolean = false;
 
   registerForm: FormGroup = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
-    dni: ['', Validators.required],
-    edad: ['', Validators.required],
+    nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]*$/)]],
+    dni: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    edad: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     mail: [
       '',
       [
@@ -33,7 +36,8 @@ export class RegisterEspComponent implements OnInit{
       ],
     ],
     password: ['', Validators.required],
-    foto: ['', Validators.required]
+    foto: ['', Validators.required],
+    recaptcha: ['', Validators.required]
   });
 
   especialidadesForm : FormGroup = this.formBuilder.group({
@@ -62,7 +66,7 @@ export class RegisterEspComponent implements OnInit{
           this.especialidadesAgregadas,
           this.registerForm.value.mail,
           this.registerForm.value.password,
-          this.registerForm.value.foto,
+          this.foto,
         );
   
         if (success) {
@@ -90,7 +94,8 @@ export class RegisterEspComponent implements OnInit{
       reader.readAsDataURL(file);
 
       reader.onload = () => {
-          this.registerForm.value.foto = reader.result as string;
+          this.foto = reader.result as string;
+          console.log(this.foto);
       };
     }
   }
@@ -126,6 +131,15 @@ export class RegisterEspComponent implements OnInit{
     if(!this.especialidades.includes(this.especialidadesForm.value.especialidadOtra) && !this.especialidadesOtras.includes(this.especialidadesForm.value.especialidadOtra) )
     {
       this.especialidadesOtras.push(this.especialidadesForm.value.especialidadOtra);
+      this.especialidadesForm.patchValue(
+        {
+          especialidadOtra : ''
+        }
+      )
+    }
+    else
+    {
+      this.toastr.info("La especialidad ya se encuentra cargada.")
     }
   }
 }

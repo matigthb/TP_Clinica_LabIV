@@ -1,0 +1,117 @@
+<body>
+    <div class="container-fluid">
+        <h2>Solicitar un Turno</h2>
+    </div>
+    <div class="card">
+        <div *ngIf="especialistaSelected == null" class="card-header">
+            Seleccione el especialista con el que desea atenderse. 
+        </div>
+        <div *ngIf="especialistaSelected != null" class="card-header">
+            {{this.especialistaSelected.Nombre | prefix:'Eligió atenderse con el/la Dr/a.' }} {{this.especialistaSelected.Apellido}}.
+            <button (click)="cambiarEspecialista()">Cambiar Especialista</button>
+        </div>
+        <div *ngIf="especialistaSelected == null" class="card-body">
+            <div class="row">
+                <div class="col-md-2" *ngFor="let doctor of doctors">
+                    <app-doctor-card [doctor]="doctor" (doctorSeleccionado)="manejarSeleccionDoctor($event)"></app-doctor-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="especialistaSelected != null" class="card">
+        <div *ngIf="especialidadSelected == ''; else bloqueElse" class="card-header">
+            Seleccione la especialidad que busca. 
+        </div>
+        <ng-template #bloqueElse>
+            <div class="card-header">
+                {{this.especialidadSelected  | prefix: 'Eligió la especialidad '}}.
+                <button (click)="cambiarEspecialidad()">Cambiar Especialidad</button>
+            </div>
+        </ng-template>
+        <div *ngIf="especialistaSelected != null && especialidadSelected == ''" class="card-body">
+            <div class="row">
+                <div class="subCard col-md-2" *ngFor="let especialidad of especialidades">
+                    <!-- doctor.component.html -->
+                    <button (click)="especialidadClickeada(especialidad.Nombre)" class="btnRedondo mb-4">
+                        <img [src]="especialidad.Foto" class="card-img-top" alt="Doctor Image">
+                        <div class="card-body">
+                        <h5 class="card-title">{{ especialidad.Nombre }}</h5>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="especialidadSelected != '' && this.auth.esAdmin" class="card">
+      <div *ngIf="this.pacienteSelected == null; else bloqueElse">
+        <div class="card-header">
+          Seleccione el Paciente que será atendido.
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3" *ngFor="let paciente of pacientes">
+              <div (click)="seleccionarPaciente(paciente)" class="fecha noSelected">
+                <div class="card-body">
+                  <h5 class="card-title">{{ paciente.Nombre }} {{ paciente.Apellido}} {{ paciente.Dni | prefix: 'DNI:'}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #bloqueElse>
+        <!-- Contenido si la condición es falsa -->
+        <div class="card-header">
+            {{ this.pacienteSelected.Nombre | prefix:'Eligió como Paciente a ' }} {{ this.pacienteSelected.Apellido}} DNI: {{ this.pacienteSelected.Dni}}
+            <button (click)="cambiarPaciente()">Cambiar Paciente</button>
+        </div>
+      </ng-template>
+    </div>
+  
+    <div *ngIf="especialistaSelected != null && especialidadSelected != ''
+                && (this.auth.esPaciente || (this.auth.esAdmin && this.pacienteSelected != null))" class="card">
+        <div *ngIf="fechaSelected.getFullYear()==2022; else bloqueElse">
+            <div class="card-header">
+              Seleccione la Fecha.
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3" *ngFor="let fecha of fechasDisponibles">
+                  <div (click)="seleccionarFecha(fecha)" class="fecha noSelected">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ datePipe.transform(this.fecha, 'dd-MM') }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <ng-template #bloqueElse>
+            <!-- Contenido si la condición es falsa -->
+            <div class="card-header">
+                Eligió el día {{ this.datePipe.transform(this.fechaSelected, 'fullDate', 'es') }}
+                <button (click)="cambiarFecha()">Cambiar Fecha</button>
+            </div>
+        </ng-template>
+    </div>
+
+    <div *ngIf="especialistaSelected != null && especialidadSelected != '' && fechaSelected.getFullYear() != 2022" class="card">
+        <div class="card-header">
+          Seleccione el horario (Pueden seleccionarse hasta 3 turnos en un mísmo día)
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3" *ngFor="let horario of horariosDisponibles">
+              <div (click)="toggleHorario(horario)"
+              [class.selected]="isSelected(horario)" [class.noSelected]="!isSelected(horario)" class="fecha">
+                <div class="card-body">
+                  <h5 class="card-title">{{ horario }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button [disabled]="horariosSelected.length<1" class="solicitar" (click)="solicitarTurno()">Solicitar</button>
+    </div>
+</body>    

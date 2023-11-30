@@ -1,24 +1,62 @@
-<nav class="navbar navbar-expand-lg bg-red fixed-top" style="background-color: #224870; color: #2AF5FF;">
+
+<app-spinner></app-spinner>
+
+<nav class="navbar navbar-expand-lg fixed-top">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="home">CLÍNICA NORTE</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="menu">MENU</a>
+      <a class="navbar-brand" routerLink="home"><img src="favicon.ico" alt="Clinica Norte Logo" class="logo"></a>
+      <ul *ngIf="auth.usuarioLogueado != null" class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li *ngIf="this.auth.esAdmin" class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="usuarios">USUARIOS</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="usuarios">USUARIOS</a>
+        
+        <li *ngIf="this.auth.esAdmin || this.auth.esPaciente"class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/solicitar-turno">SOLICITAR TURNO</a>
+        </li>
+        
+        <li *ngIf="this.auth.esPaciente" class="nav-item">
+          <a class="nav-link active"  aria-current="page" routerLink="mis-turnos">MIS TURNOS</a>
+        </li>
+        
+        <li *ngIf="this.auth.esEspecialista" class="nav-item">
+          <a class="nav-link active"  aria-current="page" routerLink="mis-turnos-esp">MIS TURNOS</a>
+        </li>
+        
+        <li *ngIf="this.auth.esAdmin" class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="turnos">TURNOS</a>
         </li>
 
-        <div class="d-flex justify-content-center align-items-center">
-          <a routerLink="/login" class="btn btn-login me-2 btn-rounded btn-sm">Login</a>
-          <a routerLink="/register" class="btn btn-register btn-rounded btn-sm">Register</a>
+        <li *ngIf="this.auth.esAdmin" class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="estadisticas">ESTADISTICAS</a>
+        </li>
+        
+        <li *ngIf="this.auth.esEspecialista" class="nav-item">
+          <a class="nav-link active"  aria-current="page" routerLink="pacientes">PACIENTES</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="mi-perfil">{{this.auth.usuarioLogueado.Nombre | capitalizarPrimeraLetra}}</a>
+        </li>
+        
+        <div>
+          <li class="nav-item">
+            <a routerLink="/login"  class="btn btn-login logout btn-rounded btn-sm" (click)="logOut()">Log Out</a>
+          </li>
+        </div>
+      </ul>
+      <ul *ngIf="auth.usuarioLogueado == null" class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div *ngIf="auth.usuarioLogueado == null" class="d-flex justify-content-center align-items-center">
+          <a routerLink="/login" class="btn btn-login me-2 btn-rounded btn-sm">Iniciar Sesión</a>
+          <a routerLink="/register" class="btn btn-register btn-rounded btn-sm">Registrarme</a>
         </div>
       </ul>
     </div>
   </div>
 </nav>
-<router-outlet></router-outlet>
+<!-- app.component.html -->
+<div [@routeAnimations]="prepareRoute(outlet)" class = "router">
+  <router-outlet #outlet="outlet"></router-outlet>
+</div>

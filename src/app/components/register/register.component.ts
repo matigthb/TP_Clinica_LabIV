@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent{
 
-  constructor(public formBuilder: FormBuilder, private router: Router, private auth:AuthenticationService, private dataServ : DataService) {
+  constructor(public formBuilder: FormBuilder, public router: Router, private auth:AuthenticationService, private dataServ : DataService) {
   }
 
   

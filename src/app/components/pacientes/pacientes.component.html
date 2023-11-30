@@ -1,0 +1,24 @@
+<div class="card">
+    <h3>MIS PACIENTES ATENDIDOS </h3>
+    <div class="usuarios" *ngFor="let paciente of pacientes">
+        <div class="header" (click)="toggleDetalle(paciente)">
+        <h2>{{ paciente.Nombre | capitalizarPrimeraLetra }} {{ paciente.Apellido | capitalizarPrimeraLetra}} <i class="fa fa-chevron-down"></i></h2>
+        </div>
+        <div class = "detalle" *ngIf="paciente.mostrarDetalle">
+        DNI: {{ paciente.Dni }}<br>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+            Ver Historia Clinica
+        </button>
+        
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <app-historias-clinicas [pacienteInput]="paciente"></app-historias-clinicas>
+                <button type="button" class="btn btnHC btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <!-- Otros detalles que quieras mostrar -->
+        </div>
+    </div>
+</div>

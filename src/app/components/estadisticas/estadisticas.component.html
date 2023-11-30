@@ -1,0 +1,27 @@
+
+<body>
+    <div class = "card">
+
+        <!-- Fila de botones -->
+        <h3>Seleccione el gráfico que desea ver.</h3>
+        <div class="boton-row">
+            <button routerLink="logs-usuario" (click) ="viewEstadisticas = true; pdfTitulo = 'Clinica_Norte_Logs_Usuario'" class="boton botonNn">Logs Usuario</button>
+            <button routerLink="turnos-por-especialidad" (click) ="viewEstadisticas = true; pdfTitulo = 'Clinica_Norte_Turnos_Por_Especialidad'" class="boton botonNn">Turnos por Especialidad</button>
+            <button routerLink="turnos-por-dia" (click) ="viewEstadisticas = true; pdfTitulo = 'Clinica_Norte_Logs_Turnos_Por_Dia'" class="boton botonNn">Turnos por Día</button>
+            <button routerLink="turnos-por-especialista" (click) ="viewEstadisticas = true; pdfTitulo = 'Clinica_Norte_Turnos_Por_Especialista'" class="boton botonNn">Turnos por Especialista</button>
+            <button routerLink="turnos-finalizados" (click) ="viewEstadisticas = true; pdfTitulo = 'Clinica_Norte_Turnos_Finalizados'" class="boton botonNn">Turnos Finalizados</button>
+        </div>
+        
+        <div *ngIf="viewEstadisticas" class="boton-row pdf">
+            <button (click)="generarPDF()" class="boton botonPdf">Descargar Pdf</button>
+        </div>
+        
+        <div *ngIf="pdfTitulo == 'Clinica_Norte_Logs_Usuario'" id="chartLogs" class="cardGrafico">
+            <app-logs-usuario-grafico></app-logs-usuario-grafico> 
+        </div>
+        <div *ngIf="viewEstadisticas" id="chartContainer" class="cardGrafico">
+            <router-outlet></router-outlet> 
+        </div>
+        
+    </div>
+</body>

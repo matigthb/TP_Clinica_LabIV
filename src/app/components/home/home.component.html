@@ -9,14 +9,32 @@
 <body>
   <div class="container">
     <div class="message">
-      <h1>¡Bienvenido a la Clinica Norte!</h1>
+      <img src="favicon.ico" alt="Clinica Norte Logo" class="logo">
+      <h1 *ngIf="this.auth.usuarioLogueado == null">¡Bienvenido/a a la Clinica Norte!</h1>
+      <h1 *ngIf="this.auth.usuarioLogueado != null">¡Bienvenido/a {{this.auth.usuarioLogueado.Nombre}} a la Clinica Norte!</h1>
+      <p>Su centro de atención médica confiable.</p>
       <div class="button-container">
-        <button routerLink="../register" class="back-button">
-          <span class="arrow-icon">&#8592;</span> Ir al Registro
+        <button *ngIf="this.auth.usuarioLogueado != null" routerLink="/mi-perfil" class="back-button">
+          <span class="arrow-icon">Mi Perfil</span> 
         </button>
-        <button routerLink="../login"  class="verify-button" >Ir al Login  <span class="arrow-icon">&#8594;</span></button>
+
+        <button *ngIf="this.auth.usuarioLogueado == null" routerLink="/login" class="back-button">
+          <span class="arrow-icon">Ingresar</span> 
+        </button>
+
+        <button *ngIf="this.auth.usuarioLogueado == null" routerLink="/register" class="back-button">
+          <span class="arrow-icon">Registrarme</span> 
+        </button>
+      </div>
+    </div>
+    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="../../../assets/car2.jpg" class="d-block w-100" alt="Imagen 1">
+        </div>
       </div>
     </div>
   </div>
+
 </body>
 </html>

@@ -1,0 +1,64 @@
+.btnIngreso {
+    margin-bottom: 20px; /* Ajusta el espacio entre el botón "Ingreso Rapido" y el formulario */
+    background-size:cover; /* Adjust as needed */
+    background-position: center; /* Adjust as needed */
+    width: 100px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    border: none; /* Remove default button border */
+    &:hover{
+      filter: brightness(0.7);
+      cursor: pointer;
+      transform: scale(1.09);
+    }
+    color:#ffffff;
+    font-weight: bold;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+
+  }
+
+  .btn-label {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
+  }
+
+
+  .btnAdmin {
+    background-image: url('../../../assets/admin.jpg');
+  }
+  
+  .btnPac1 {
+    background-image: url('../../../assets/pac1.jpg');
+  }
+  
+  .btnPac2 {
+    background-image: url('../../../assets/pac3.jpg');
+  }
+  
+  .btnPac3 {
+    background-image: url('../../../assets/pac4.jpg');
+  }
+  
+  .btnEsp1 {
+    background-image: url('../../../assets/alejandra.jpg');
+  }
+  
+  .btnEsp2 {
+    background-image: url('../../../assets/doc1.jpg');
+  }
+
+  .btn{
+    margin-right: 10px;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  /* Add additional styles as needed */

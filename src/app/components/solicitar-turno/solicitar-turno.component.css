@@ -1,0 +1,58 @@
+.card{
+    background-color: rgb(65, 140, 211);
+    margin-top:40px;
+    margin-bottom: -20px;
+    
+}
+
+.subCard{
+    &:hover {
+        color: #000000;
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+.selected {
+    background-color: #224870;
+    color: #cecece;
+}
+
+.noSelected {
+    background-color: #cecece;
+    color: #000000;
+}
+
+.btnRedondo{
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 50%; /* Hace que el borde del botón sea circular */
+    text-decoration: none; /* Elimina la decoración de texto */
+    background-color: #3498db; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    font-size: 16px; /* Tamaño del texto */
+    border: none; /* Elimina el borde del botón */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
+.solicitar{
+    width: 100px;
+    height:60px;
+    margin-left: 50%;
+    margin-bottom: 5px;
+}
+
+.card-header{
+    font-size: 21px;
+}
+
+.fecha{
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
